@@ -1,0 +1,12 @@
+{application, rebar_browserify_plugin,
+ [
+  {description, "Rebar Browserify Plugin"},
+  {vsn, "1.0"},
+  {registered, []},
+  {applications, [
+                  kernel,
+                  stdlib
+                 ]},
+  {mod, { rebar_browserify_plugin, []}},
+  {env, []}
+ ]}.
