@@ -96,7 +96,7 @@ clean(Config, _AppFile) ->
 browserify(Source, Destination, Options) ->
     case needs_update(Source, Destination) of
         true ->
-            Cmd = lists:flatten(["browserify ", Source, " -o ", Destination, " " | lists:join(proplists:get_value(options, Options), " ")]),
+            Cmd = lists:flatten(["browserify ", string:join([[$',O,$'] || O <- Options], " "), " '", Source, "' -o '", Destination, $']),
             ShOpts = [{use_stdout, false}, return_on_error],
             case rebar_utils:sh(Cmd, ShOpts) of
                 {ok, _} ->
@@ -104,6 +104,7 @@ browserify(Source, Destination, Options) ->
                 {error, Reason} ->
                     rebar_log:log(error, "Browserifying asset ~s failed:~n  ~p~n",
                            [Source, Reason]),
+                    _ = file:delete(Destination),
                     rebar_utils:abort()
             end;
         false ->
